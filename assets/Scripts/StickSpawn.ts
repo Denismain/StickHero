@@ -29,9 +29,13 @@ export default class StickSpawn extends cc.Component {
 
         const localPosition = this.node.convertToNodeSpaceAR(new cc.Vec3(worldPosition.x, worldPosition.y, worldPosition.z));
 
-
         stickNode.setPosition(cc.v3(localPosition));
         stickNode.parent = this.node;
+
+
+        // Отправляем событие на корневой узел сцены
+        cc.director.getScene().emit('stick-created', stickNode);
+
 
         this.currentStick = stickNode;
     }
