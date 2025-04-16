@@ -6,7 +6,7 @@ const { ccclass, property } = cc._decorator;
 export default class StickScale extends cc.Component {
 
     @property({ type: cc.Float })
-    scaleIncrement: number = 0.1;
+    scaleIncrement: number = 0.5;
 
     private stick: cc.Node = null; 
 

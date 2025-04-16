@@ -38,6 +38,9 @@ export default class ColumnSpawn extends cc.Component {
         columnNode.parent = this.node;
 
         this.currentColumn = columnNode;
+
+        // Отправляем событие через cc.director
+        cc.director.getScene().emit('column-created', columnNode);
     }
 
     onDestroy() {
