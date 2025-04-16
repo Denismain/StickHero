@@ -5,13 +5,13 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Hero extends cc.Component {
 
-    private rigidBody: cc.RigidBody = null; 
-
     @property({ type: cc.Float })
     speedX: number = 100;
 
+    private hero: cc.RigidBody = null; 
+
     onLoad() {
-        this.rigidBody = this.getComponent(cc.RigidBody); // Получаем RigidBody
+        this.hero = this.getComponent(cc.RigidBody);
         GameManager.Instance.node.on('game-state-changed', this.onGameStateChanged, this);
     }
 
@@ -22,7 +22,7 @@ export default class Hero extends cc.Component {
     }
 
     startMoving() {
-        this.rigidBody.linearVelocity = cc.v2(this.speedX, 0);
+        this.hero.linearVelocity = cc.v2(this.speedX, 0);
     }
 
     onDestroy() {

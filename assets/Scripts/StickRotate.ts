@@ -15,7 +15,6 @@ export default class StickRotate extends cc.Component {
     private onGameStateChanged(newState: GameState) {
         if (newState === GameState.TOUCH_ON) {
             this.stickRotate();
-            GameManager.Instance.gameState = GameState.MOVING;
         }
     }
 
@@ -23,6 +22,9 @@ export default class StickRotate extends cc.Component {
         cc.tween(this.node)
             .to(this.tweenDuration, { angle: -90 }, {
                 easing: "circIn",
+            })
+            .call(() => {
+                GameManager.Instance.gameState = GameState.MOVING;
             })
             .start();
     }
