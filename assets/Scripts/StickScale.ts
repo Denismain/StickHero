@@ -6,9 +6,10 @@ const { ccclass, property } = cc._decorator;
 export default class StickScale extends cc.Component {
 
     @property({ type: cc.Float })
-    scaleIncrement: number = 0.5;
+    scaleIncrement: number = 1;
 
-    private stick: cc.Node = null; 
+    private stick: cc.Node = null;
+    private sprite: cc.Sprite = null;
 
     onLoad() {
         this.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
@@ -19,10 +20,12 @@ export default class StickScale extends cc.Component {
 
     private onStickCreated(stickNode: cc.Node) {
         this.stick = stickNode;
+        this.sprite = this.stick.getComponentInChildren(cc.Sprite);
     }
 
     onTouchStart() {
         if (GameManager.Instance.gameState === GameState.NONE) {
+            this.sprite.node.active = true;
             this.schedule(this.scaleY, 0);
         }
     }
