@@ -8,9 +8,9 @@ export default class CameraFollow extends cc.Component {
     @property({ type: cc.Node })
     hero: cc.Node = null;
 
-    private smooth: number = 0.125;  //Плавность слежения
+    private smooth: number = 0.125;
     private offset: cc.Vec2 = new cc.Vec2(420, 45);
-    private isFollowing: boolean = false;  // Флаг слежения
+    private isFollowing: boolean = false;
 
     start () {
         GameManager.Instance.node.on('game-state-changed', this.onGameStateChanged, this);
@@ -27,9 +27,7 @@ export default class CameraFollow extends cc.Component {
     lateUpdate() {
         if (this.isFollowing) {
             const heroWorldPosition = this.hero.convertToWorldSpaceAR(cc.Vec2.ZERO);
-            // Вычисляем желаемую позицию камеры
             const desiredPosition = new cc.Vec2(heroWorldPosition.x + this.offset.x, heroWorldPosition.y + this.offset.y);
-            // Сглаживание
             let smoothPosition = new cc.Vec2(this.node.x, this.node.y);
             smoothPosition.x = cc.misc.lerp(this.node.x, desiredPosition.x, this.smooth);
             smoothPosition.y = cc.misc.lerp(this.node.y, desiredPosition.y, this.smooth);

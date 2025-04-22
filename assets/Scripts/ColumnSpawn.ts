@@ -30,7 +30,7 @@ export default class ColumnSpawn extends cc.Component {
         const newXPosition = worldPosition.x + randomXPosition;
         const localPosition = this.node.convertToNodeSpaceAR(new cc.Vec3(newXPosition, worldPosition.y, worldPosition.z));
 
-        const randomScaleX = Math.random() * 2;
+        const randomScaleX = Math.random() * 1.5 + 0.4;
         const scaleColumn = columnNode.getScale(cc.v2());
 
         columnNode.setScale(randomScaleX, scaleColumn.y);
@@ -39,7 +39,6 @@ export default class ColumnSpawn extends cc.Component {
 
         this.currentColumn = columnNode;
 
-        // Отправляем событие через cc.director
         cc.director.getScene().emit('column-created', columnNode);
     }
 

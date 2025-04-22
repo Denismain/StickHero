@@ -24,11 +24,8 @@ export default class StickSpawnPosition extends cc.Component {
     private spawnChanged() {
         if (this.stickSpawnNode && this.columnNode) {
             const columnWorldPosition = this.columnNode.convertToWorldSpaceAR(cc.Vec3.ZERO);
-            const localPosition = this.node.parent.convertToNodeSpaceAR(columnWorldPosition);
-            const currentPosition = this.stickSpawnNode.position;
-            const targetPosition = (this.columnNode.width / 2) + localPosition.x;
-            const newPosition = new cc.Vec3(targetPosition, currentPosition.y, currentPosition.z);
-            this.stickSpawnNode.setPosition(newPosition);
+            const targetPosition = (this.columnNode.width * this.columnNode.scaleX) / 2;
+            this.stickSpawnNode.x = columnWorldPosition.x + targetPosition;
         }
     }
 

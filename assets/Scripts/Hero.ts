@@ -1,94 +1,87 @@
 import { GameManager } from './Managers/GameManager';
 import { GameState } from './GameStates/GameState';
-const { ccclass, property } = cc._decorator;
+const { ccclass } = cc._decorator;
 
 @ccclass
 export default class Hero extends cc.Component {
 
-    @property({ type: cc.Float })
-    speedX: number = 100;
-
-    @property({ type: cc.Node, tooltip: "hero node for raycast" })
-    heroNode: cc.Node = null;
-
-    @property({ tooltip: "Ray length" })
-    length: number = 100;
-
+    private moveSpeed: number = 300;
     private currentColumn: cc.Node = null;
-    private hero: cc.RigidBody = null; 
-    private raycastResults: cc.PhysicsRayCastResult[] = [];
-    private raycastDirection: cc.Vec2 = new cc.Vec2(0, -1);
+    private currentStick: cc.Node = null;
+    private hero: cc.RigidBody = null;
 
     onLoad() {
         this.hero = this.getComponent(cc.RigidBody);
         GameManager.Instance.node.on('game-state-changed', this.onGameStateChanged, this);
         cc.director.getScene().on('column-created', this.onColumnCreated, this);
+        cc.director.getScene().on('stick-created', this.onStickCreated, this);
     }
 
     private onGameStateChanged(newState: GameState) {
         if (newState === GameState.MOVING) {
-            this.startMoving();
+            this.stickMoving();
         }
     }
+
+    //update() {
+    //    console.log("Current State Game: ", GameManager.Instance.gameState);
+    //}
 
     private onColumnCreated(columnNode: cc.Node) {
-        this.currentColumn = columnNode; // Сохраняем ссылку на текущую колонну
+        this.currentColumn = columnNode;
+    }
+    private onStickCreated(stickNode: cc.Node) {
+        this.currentStick = stickNode;
     }
 
-    private startMoving() {
-        this.hero.linearVelocity = cc.v2(this.speedX, 0);
+    private moving() {
+        const columnWidth = this.currentColumn.width * this.currentColumn.scaleX - 85;
+        const targetX = this.currentColumn.convertToWorldSpaceAR(cc.Vec2.ZERO).x + (columnWidth / 2);
+
+        const distance = Math.abs(targetX - this.hero.node.position.x);
+        const moveDuration = distance / this.moveSpeed;
+
+        cc.tween(this.hero.node)
+            .to(moveDuration, { position: cc.v3(targetX, this.hero.node.position.y, this.hero.node.position.z) }, { easing: 'linear' })
+            .call(() => {
+                this.callbackMoving();
+            })
+            .start();
     }
 
-    private stopMoving() {
-
+    private callbackMoving() {
         if (this.currentColumn && GameManager.Instance.gameState === GameState.MOVING) {
-            // Получаем позицию колонны
-        this.hero.linearVelocity = cc.v2(0, 0);
-
-
-            let columnPosition = this.currentColumn.convertToWorldSpaceAR(cc.v2(0, 0));
-
-            // Вычисляем целевую позицию
-            let targetX = columnPosition.x + 10;
-            let targetPosition = cc.v2(targetX, this.node.position.y); // Сохраняем Y
-
-            // Устанавливаем новую позицию герою
-            this.node.setPosition(targetPosition);
-
-
-        GameManager.Instance.gameState = GameState.NONE;
+            GameManager.Instance.gameState = GameState.NONE;
         }
     }
 
-    update() {
-        this.Raycast();
+    private stickMoving() {
+        const sprite = this.currentStick.getComponentInChildren(cc.Sprite);
+        const height = sprite.node.height;
+        const stickHeight = height * this.currentStick.scaleY; 
+        const targetX = this.currentStick.convertToWorldSpaceAR(cc.Vec2.ZERO).x + (stickHeight);
+
+        const distance = Math.abs(targetX - this.hero.node.position.x);
+        const moveDuration = distance / this.moveSpeed;
+
+        cc.tween(this.hero.node)
+            .to(moveDuration, { position: cc.v3(targetX, this.hero.node.position.y, this.hero.node.position.z) }, { easing: 'linear' })
+            .call(() => {
+                this.callbackGameOver();
+            })
+            .start();
     }
 
-    private Raycast() {
-        const originPos = this.heroNode.convertToWorldSpaceAR(cc.v2(0, 0));
-        const endPos = originPos.add(this.raycastDirection.mul(this.length));
-
-        this.raycastResults = cc.director.getPhysicsManager().rayCast(
-            originPos,
-            endPos,
-            cc.RayCastType.All
-        );
-
-        if (this.raycastResults.length > 0) {
-            for (let i = 0; i < this.raycastResults.length; i++) {
-                const collider = this.raycastResults[i].collider;
-                if (collider.node.name === "Column") {
-                    console.log("Hit Column");
-                    this.stopMoving();
-                    break;
-                }
-            }
+    private callbackGameOver() {
+        if (GameManager.Instance.gameState !== GameState.GAME_OVER) {
+            this.moving();
         }
     }
 
     onDestroy() {
         GameManager.Instance.node.off('game-state-changed', this.onGameStateChanged, this);
         cc.director.getScene().off('column-created', this.onColumnCreated, this);
+        cc.director.getScene().off('stick-created', this.onStickCreated, this);
     }
 
 }

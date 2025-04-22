@@ -8,8 +8,6 @@ export default class StickSpawn extends cc.Component {
     @property(cc.Prefab)
     stickPrefab: cc.Prefab = null;
 
-    private currentStick: cc.Node = null;
-
     onLoad() {
         GameManager.Instance.node.on('game-state-changed', this.onGameStateChanged, this);
     }
@@ -22,22 +20,9 @@ export default class StickSpawn extends cc.Component {
 
     private spawnStick() {
         const stickNode = cc.instantiate(this.stickPrefab);
-
-        const worldPosition = this.currentStick
-            ? this.currentStick.convertToWorldSpaceAR(cc.Vec3.ZERO)
-            : this.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
-
-        const localPosition = this.node.convertToNodeSpaceAR(new cc.Vec3(worldPosition.x, worldPosition.y, worldPosition.z));
-
-        stickNode.setPosition(cc.v3(localPosition));
-        stickNode.parent = this.node;
-
-
-        // Отправляем событие на корневой узел сцены
+        stickNode.position = this.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
+        cc.director.getScene().addChild(stickNode);
         cc.director.getScene().emit('stick-created', stickNode);
-
-
-        this.currentStick = stickNode;
     }
 
     onDestroy() {
