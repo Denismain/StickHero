@@ -75,6 +75,8 @@ export default class Hero extends cc.Component {
     private callbackGameOver() {
         if (GameManager.Instance.gameState !== GameState.STICK_MOVING) {
             this.moving();
+        } else {
+            GameManager.Instance.gameState = GameState.GAME_OVER;
         }
     }
 
