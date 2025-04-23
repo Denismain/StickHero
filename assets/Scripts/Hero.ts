@@ -23,9 +23,9 @@ export default class Hero extends cc.Component {
         }
     }
 
-    //update() {
-    //    console.log("Current State Game: ", GameManager.Instance.gameState);
-    //}
+    update() {
+        console.log("Current State Game: ", GameManager.Instance.gameState);
+    }
 
     private onColumnCreated(columnNode: cc.Node) {
         this.currentColumn = columnNode;
@@ -73,7 +73,7 @@ export default class Hero extends cc.Component {
     }
 
     private callbackGameOver() {
-        if (GameManager.Instance.gameState !== GameState.GAME_OVER) {
+        if (GameManager.Instance.gameState !== GameState.STICK_MOVING) {
             this.moving();
         }
     }

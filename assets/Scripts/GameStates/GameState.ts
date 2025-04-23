@@ -3,5 +3,6 @@ export enum GameState {
     NONE,
     TOUCH_ON,
     MOVING,
+    STICK_MOVING,
     GAME_OVER
 }

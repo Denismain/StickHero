@@ -19,7 +19,7 @@ export default class StickDetected extends cc.Component {
 
     notCollision() {
         if (this.isCollision === false && GameManager.Instance.gameState === GameState.MOVING || GameManager.Instance.gameState === GameState.TOUCH_ON) {
-            GameManager.Instance.gameState = GameState.GAME_OVER;
+            GameManager.Instance.gameState = GameState.STICK_MOVING;
         }
     }
 
