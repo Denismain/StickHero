@@ -1,9 +1,9 @@
-import { GameManager } from './Managers/GameManager';
-import { GameState } from './GameStates/GameState';
+import { GameManager } from '../Managers/GameManager';
+import { GameState } from '../GameStates/GameState';
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class GameOver extends cc.Component {
+export default class HeroGameOver extends cc.Component {
 
     @property({ type: cc.Node })
     hero: cc.RigidBody = null;
