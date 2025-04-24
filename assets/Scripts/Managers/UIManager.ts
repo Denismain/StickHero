@@ -25,7 +25,9 @@ export default class UIManager extends cc.Component {
         }
         if (newState === GameState.GAME_OVER) {
             this.GameOverUI.active = true;
-        } else { this.GameOverUI.active = false; }
+        } else {
+            this.GameOverUI.active = false;
+        }
     }
 
     onDestroy() {

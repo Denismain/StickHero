@@ -34,13 +34,13 @@ export default class ColumnSpawn extends cc.Component {
         const newXPosition = worldPosition.x + randomXPosition;
         const localPosition = this.node.convertToNodeSpaceAR(new cc.Vec3(newXPosition, worldPosition.y, worldPosition.z));
 
-        const randomScaleX = Math.random() * 1.5 + 0.4;
+        const randomScaleX = Math.random() * 1.2 + 0.4;
         const scaleColumn = columnNode.getScale(cc.v2());
 
         columnNode.setScale(randomScaleX, scaleColumn.y);
         columnNode.setPosition(localPosition);
         columnNode.parent = this.node;
-        //repdoint
+        //redpoint
         const childNode = columnNode.getChildByName("RedPoint");
         childNode.setScale(childNode.scaleX / columnNode.scaleX, childNode.scaleY / columnNode.scaleY, childNode.scaleZ / columnNode.scaleZ);
         //

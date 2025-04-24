@@ -28,6 +28,7 @@ export class Score extends cc.Component {
     public addScore(amount: number) {
         this.currentScore += amount;
         this.updateScoreLabel();
+        cc.director.emit('score-changed', this.currentScore);
     }
 
     private updateScoreLabel() {
