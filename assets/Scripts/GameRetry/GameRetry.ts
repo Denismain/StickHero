@@ -1,9 +1,9 @@
-import { GameManager } from './Managers/GameManager';
-import { GameState } from './GameStates/GameState';
+import { GameManager } from '../Managers/GameManager';
+import { GameState } from '../GameStates/GameState';
 const { ccclass } = cc._decorator;
 
 @ccclass
-export default class PlayButton extends cc.Component {
+export default class GameRetry extends cc.Component {
 
     onLoad() {
         this.node.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
@@ -11,9 +11,8 @@ export default class PlayButton extends cc.Component {
     }
 
     onTouchEnd() {
-        if (GameManager.Instance.gameState !== GameState.NONE) {
-            GameManager.Instance.gameState = GameState.NONE;
-            this.node.active = false;
+        if (GameManager.Instance.gameState === GameState.GAME_OVER) {
+           // GameManager.Instance.gameState = GameState.NONE;
         }
     }
 

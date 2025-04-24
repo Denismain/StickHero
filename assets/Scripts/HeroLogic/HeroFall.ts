@@ -1,9 +1,9 @@
-import { GameManager } from './Managers/GameManager';
-import { GameState } from './GameStates/GameState';
+import { GameManager } from '../Managers/GameManager';
+import { GameState } from '../GameStates/GameState';
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class GameOver extends cc.Component {
+export default class HeroFall extends cc.Component {
 
     @property({ type: cc.Node })
     hero: cc.RigidBody = null;
@@ -14,7 +14,7 @@ export default class GameOver extends cc.Component {
     }
 
     private onGameStateChanged(newState: GameState) {
-        if (newState === GameState.GAME_OVER) {
+        if (newState === GameState.FALL) {
             this.hero.gravityScale = 1;
         }
     }

@@ -1,5 +1,5 @@
-import { GameManager } from './Managers/GameManager';
-import { GameState } from './GameStates/GameState';
+import { GameManager } from '../Managers/GameManager';
+import { GameState } from '../GameStates/GameState';
 const { ccclass } = cc._decorator;
 
 @ccclass
