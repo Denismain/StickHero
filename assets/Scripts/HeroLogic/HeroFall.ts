@@ -16,6 +16,8 @@ export default class HeroFall extends cc.Component {
     private onGameStateChanged(newState: GameState) {
         if (newState === GameState.FALL) {
             this.hero.gravityScale = 1;
+        } else if (newState === GameState.LOAD) {
+            this.hero.gravityScale = 0;
         }
     }
 

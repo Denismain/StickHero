@@ -25,9 +25,9 @@ export default class Hero extends cc.Component {
         }
     }
 
-    update() {
-        console.log("Current State Game: ", GameManager.Instance.gameState);
-    }
+    //update() {
+    //    console.log("Current State Game: ", GameManager.Instance.gameState);
+    //}
 
     private onColumnCreated(columnNode: cc.Node) {
         this.currentColumn = columnNode;

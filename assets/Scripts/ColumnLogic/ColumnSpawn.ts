@@ -9,6 +9,7 @@ export default class ColumnSpawn extends cc.Component {
     columnPrefab: cc.Prefab = null;
 
     private currentColumn: cc.Node = null;
+    private spawnColumns: cc.Node[] = [];
 
     onLoad() {
         GameManager.Instance.node.on('game-state-changed', this.onGameStateChanged, this);
@@ -17,6 +18,9 @@ export default class ColumnSpawn extends cc.Component {
     private onGameStateChanged(newState: GameState) {
         if (newState === GameState.NONE) {
             this.spawnColumn();
+        }
+        if (newState === GameState.LOAD) {
+            this.destroyColumns();
         }
     }
 
@@ -38,8 +42,17 @@ export default class ColumnSpawn extends cc.Component {
         columnNode.parent = this.node;
 
         this.currentColumn = columnNode;
+        this.spawnColumns.push(columnNode);
 
         cc.director.getScene().emit('column-created', columnNode);
+    }
+
+    private destroyColumns() {
+        for (let i = 0; i < this.spawnColumns.length; i++) {
+            this.spawnColumns[i].destroy();
+        }
+        this.spawnColumns = [];
+        this.currentColumn = null;
     }
 
     onDestroy() {

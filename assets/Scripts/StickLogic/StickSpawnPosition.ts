@@ -9,15 +9,20 @@ export default class StickSpawnPosition extends cc.Component {
     stickSpawnNode: cc.Node = null;
 
     private columnNode: cc.Node = null;
+    private currentPos: cc.Vec3 = null;
 
     onLoad() {
         cc.director.getScene().on('column-created', this.onColumnCreated, this);
         GameManager.Instance.node.on('game-state-changed', this.onGameStateChanged, this);
+        this.currentPos = this.node.position;
     }
 
     private onGameStateChanged(newState: GameState) {
         if (newState === GameState.MOVING) {
             this.spawnChanged();
+        }
+        if (newState === GameState.LOAD) {
+            this.resetPosition();
         }
     }
 
@@ -31,6 +36,10 @@ export default class StickSpawnPosition extends cc.Component {
 
     private onColumnCreated(columnNode: cc.Node) {
         this.columnNode = columnNode;
+    }
+
+    private resetPosition() {
+        this.node.position = this.currentPos;
     }
 
     onDestroy() {

@@ -12,7 +12,7 @@ export default class GameRetry extends cc.Component {
 
     onTouchEnd() {
         if (GameManager.Instance.gameState === GameState.GAME_OVER) {
-           // GameManager.Instance.gameState = GameState.NONE;
+            GameManager.Instance.gameState = GameState.LOAD;
         }
     }
 
