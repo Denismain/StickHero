@@ -1,4 +1,4 @@
-const {ccclass, property} = cc._decorator;
+const { ccclass } = cc._decorator;
 
 @ccclass
 export default class ScoreLabel extends cc.Component {
@@ -8,15 +8,13 @@ export default class ScoreLabel extends cc.Component {
         this.node.active = false;
     }
 
-    onRedPoint() {
+    private onRedPoint() {
         this.node.active = true;
-        cc.tween(this.node)
-            .delay(1)
-            .call(() => {
-                this.node.active = false;
-            })
-            .start();
+        this.scheduleOnce(() => {
+            this.node.active = false;
+        }, 0.8);
     }
+
     onDestroy() {
         cc.director.off('red-point', this.onRedPoint, this);
     }
