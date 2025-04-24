@@ -40,6 +40,10 @@ export default class ColumnSpawn extends cc.Component {
         columnNode.setScale(randomScaleX, scaleColumn.y);
         columnNode.setPosition(localPosition);
         columnNode.parent = this.node;
+        //repdoint
+        const childNode = columnNode.getChildByName("RedPoint");
+        childNode.setScale(childNode.scaleX / columnNode.scaleX, childNode.scaleY / columnNode.scaleY, childNode.scaleZ / columnNode.scaleZ);
+        //
 
         this.currentColumn = columnNode;
         this.spawnColumns.push(columnNode);
