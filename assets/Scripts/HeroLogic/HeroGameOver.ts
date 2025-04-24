@@ -5,21 +5,11 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class HeroGameOver extends cc.Component {
 
-    @property({ type: cc.Node })
-    hero: cc.RigidBody = null;
-
-    onLoad() {
-        this.hero = this.getComponent(cc.RigidBody);
-        GameManager.Instance.node.on('game-state-changed', this.onGameStateChanged, this);
-    }
-
-    private onGameStateChanged(newState: GameState) {
-        if (newState === GameState.GAME_OVER) {
-            this.hero.gravityScale = 1;
+    onCollisionEnter(other: cc.Collider) {
+        if (other.tag === 2) {
+            //if (GameManager.Instance.gameState === GameState.FALL) {
+            GameManager.Instance.gameState = GameState.GAME_OVER;
+            //}
         }
-    }
-
-    onDestroy() {
-        GameManager.Instance.node.off('game-state-changed', this.onGameStateChanged, this);
     }
 }

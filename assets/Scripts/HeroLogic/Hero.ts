@@ -1,5 +1,6 @@
 import { GameManager } from '../Managers/GameManager';
 import { GameState } from '../GameStates/GameState';
+import { Score } from '../Score/Score';
 const { ccclass } = cc._decorator;
 
 @ccclass
@@ -9,6 +10,7 @@ export default class Hero extends cc.Component {
     private currentColumn: cc.Node = null;
     private currentStick: cc.Node = null;
     private hero: cc.RigidBody = null;
+    private columnValue: number = 1;
 
     onLoad() {
         this.hero = this.getComponent(cc.RigidBody);
@@ -50,6 +52,10 @@ export default class Hero extends cc.Component {
     }
 
     private callbackMoving() {
+        const scoreManager = GameManager.Instance.node.getComponent(Score);
+        if (scoreManager) {
+            scoreManager.addScore(this.columnValue);
+        }
         if (this.currentColumn && GameManager.Instance.gameState === GameState.MOVING) {
             GameManager.Instance.gameState = GameState.NONE;
         }
@@ -76,7 +82,7 @@ export default class Hero extends cc.Component {
         if (GameManager.Instance.gameState !== GameState.STICK_MOVING) {
             this.moving();
         } else {
-            GameManager.Instance.gameState = GameState.GAME_OVER;
+            GameManager.Instance.gameState = GameState.FALL;
         }
     }
 

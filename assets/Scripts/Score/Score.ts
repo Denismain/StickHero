@@ -1,7 +1,7 @@
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Score extends cc.Component {
+export class Score extends cc.Component {
 
     @property({ type: cc.Label })
     public scoreLabel: cc.Label = null;
